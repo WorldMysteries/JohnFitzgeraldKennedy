@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Дело Кеннеди — историческое расследование</title>
+<style>
+:root {
+  --site-primary: #a92d2d;
+  --site-secondary: #252525;
+  --site-background: #f0eee9;
+  --site-on-primary: #ffffff;
+  --site-on-secondary: #ffffff;
+  --site-on-background: #1b1b1b;
+  --site-font-body: Arial, Helvetica, sans-serif;
+  --site-font-heading: Georgia, 'Times New Roman', serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  color-scheme: light dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--site-font-body); background: light-dark(#f0eee9,#171717); color: light-dark(#1b1b1b,#eeeeea); }
+#app { min-height: 100vh; width: 100%; border-radius: 0; background-color: var(--site-background); color: var(--site-on-background); overflow: hidden; }
+a { color: inherit; }
+.topbar { background: var(--site-secondary); color: var(--site-on-secondary); padding: calc(14px * var(--site-spacing-scale)) max(5vw,22px); display:flex; align-items:center; justify-content:space-between; gap:16px; border-bottom:4px solid var(--site-primary); }
+.brand { font-family:var(--site-font-heading); font-weight:bold; letter-spacing:.11em; font-size:13px; text-transform:uppercase; }
+.brand span { color:#d94b46; }
+.topbar nav { display:flex; gap:20px; flex-wrap:wrap; font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
+.topbar nav a { text-decoration:none; opacity:.86; }
+.topbar nav a:hover { color:#ef8c85; }
+.hero { position:relative; min-height:530px; display:grid; grid-template-columns: 1.08fr .92fr; background:#171717; color:#f3f0e9; }
+.hero-copy { padding:clamp(34px,7vw,92px) 4vw clamp(40px,7vw,88px) max(5vw,22px); display:flex; flex-direction:column; justify-content:center; position:relative; z-index:1; }
+.kicker { color:#e45a54; text-transform:uppercase; font-size:11px; letter-spacing:.22em; font-weight:bold; display:flex; align-items:center; gap:10px; }
+.kicker:before { content:''; width:28px; height:2px; background:var(--site-primary); }
+h1,h2,h3 { font-family:var(--site-font-heading); font-weight:normal; }
+h1 { font-size:clamp(42px,6vw,78px); line-height:.98; letter-spacing:-.045em; margin:22px 0; max-width:720px; }
+h1 em { color:#d64a44; font-style:normal; }
+.hero-copy p { color:#c6c4c0; max-width:520px; line-height:1.75; font-size:15px; }
+.hero-meta { display:flex; gap:28px; margin-top:30px; padding-top:18px; border-top:1px solid #484848; max-width:480px; }
+.hero-meta strong { display:block; font-family:var(--site-font-heading); font-size:25px; font-weight:normal; }
+.hero-meta small { color:#aaa; font-size:10px; text-transform:uppercase; letter-spacing:.12em; }
+.hero-art { position:relative; min-height:350px; overflow:hidden; background:#282828; }
+.hero-art img { width:100%; height:100%; position:absolute; inset:0; object-fit:cover; filter:grayscale(1) contrast(1.08); opacity:.77; }
+.hero-art:after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,#171717 0%,transparent 40%),linear-gradient(0deg,rgba(0,0,0,.5),transparent 45%); }
+.photo-caption { position:absolute; z-index:2; bottom:22px; right:22px; max-width:210px; border-right:2px solid #d64a44; padding-right:12px; text-align:right; font-size:10px; color:#ddd; line-height:1.6; letter-spacing:.06em; }
+.ticker { background:var(--site-primary); color:white; padding:11px max(5vw,22px); display:flex; gap:18px; align-items:center; font-size:10px; letter-spacing:.14em; text-transform:uppercase; }
+.ticker b { background:#171717; padding:5px 8px; font-size:9px; }
+.section { padding:clamp(42px,6vw,78px) max(5vw,22px); }
+.section-head { display:flex; justify-content:space-between; align-items:end; gap:22px; margin-bottom:30px; }
+.section-no { color:var(--site-primary); font-size:11px; font-weight:bold; letter-spacing:.16em; text-transform:uppercase; }
+h2 { font-size:clamp(31px,4vw,48px); margin:9px 0 0; line-height:1.08; letter-spacing:-.025em; }
+.section-intro { color:light-dark(#62605d,#b4b4b0); max-width:400px; line-height:1.65; font-size:13px; }
+.timeline { background:light-dark(#e5e2dc,#202020); }
+.timeline-track { display:grid; grid-template-columns:repeat(4,1fr); gap:0; border-top:1px solid light-dark(#bcb7ae,#4c4c4c); }
+.time-item { padding:24px 22px 8px 0; position:relative; cursor:pointer; }
+.time-item:before { content:''; position:absolute; top:-6px; left:0; width:11px; height:11px; border-radius:50%; background:light-dark(#aaa49a,#666); border:2px solid light-dark(#e5e2dc,#202020); }
+.time-item.active:before { background:var(--site-primary); box-shadow:0 0 0 4px #a92d2d22; }
+.time-item time { color:var(--site-primary); font-size:11px; font-weight:bold; letter-spacing:.08em; }
+.time-item h3 { font-size:21px; margin:12px 0 9px; }
+.time-item p { color:light-dark(#5d5a55,#bcbcb8); font-size:12px; line-height:1.7; margin:0; }
+.time-item:focus-visible,.filter:focus-visible,button:focus-visible { outline:2px solid var(--site-primary); outline-offset:4px; }
+.timeline-detail { margin-top:28px; padding:20px 22px; border-left:3px solid var(--site-primary); background:light-dark(#f2f0eb,#292929); display:grid; grid-template-columns:140px 1fr; gap:20px; }
+.timeline-detail .detail-time { font-family:var(--site-font-heading); font-size:24px; }
+.timeline-detail p { margin:0; font-size:13px; line-height:1.75; color:light-dark(#4d4a46,#d0cfca); }
+.evidence-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.evidence-card { border:1px solid light-dark(#d5d0c7,#454545); padding:23px; background:light-dark(#f8f7f3,#202020); min-height:235px; display:flex; flex-direction:column; }
+.evidence-top { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.evidence-icon { width:38px; height:38px; display:grid; place-items:center; border:1px solid light-dark(#c9c3b9,#555); color:var(--site-primary); font-size:18px; }
+.tag { font-size:9px; text-transform:uppercase; letter-spacing:.1em; padding:6px 7px; border:1px solid; }
+.tag.fact { color:#34714c; border-color:#79a88a; }
+.tag.dispute { color:#a92d2d; border-color:#c87974; }
+.evidence-card h3 { font-size:23px; margin:22px 0 9px; }
+.evidence-card p { font-size:12px; line-height:1.75; color:light-dark(#605d58,#bdbdb8); margin:0 0 17px; }
+.evidence-card button { margin-top:auto; background:transparent; border:0; border-top:1px solid light-dark(#d5d0c7,#454545); padding:13px 0 0; display:flex; justify-content:space-between; width:100%; color:var(--site-primary); text-transform:uppercase; letter-spacing:.1em; font-size:10px; cursor:pointer; }
+.evidence-detail { display:none; margin-top:12px; border-top:1px dashed light-dark(#ccc,#555); padding-top:12px; font-size:12px; line-height:1.7; color:light-dark(#333,#ddd); }
+.evidence-card.open .evidence-detail { display:block; }
+.versions { background:#1a1a1a; color:#f3f0e9; }
+.versions .section-intro { color:#b6b3ad; }
+.version-tabs { display:flex; gap:8px; flex-wrap:wrap; margin:27px 0 20px; }
+.version-tabs button { cursor:pointer; background:transparent; color:#ccc; border:1px solid #505050; padding:11px 15px; font-size:11px; text-transform:uppercase; letter-spacing:.07em; }
+.version-tabs button.active { background:var(--site-primary); color:white; border-color:var(--site-primary); }
+.version-panel { display:grid; grid-template-columns:.8fr 1.2fr; border:1px solid #464646; }
+.version-aside { background:#242424; padding:28px; border-right:1px solid #464646; }
+.version-aside .label { color:#df5b55; text-transform:uppercase; letter-spacing:.15em; font-size:10px; }
+.version-aside h3 { font-size:30px; line-height:1.1; margin:15px 0; }
+.version-aside p { font-size:12px; line-height:1.75; color:#bcb9b2; }
+.verdict { margin-top:24px; padding-top:15px; border-top:1px solid #4b4b4b; font-size:11px; color:#e6e1d8; }
+.verdict strong { color:#e35a54; display:block; text-transform:uppercase; font-size:9px; letter-spacing:.13em; margin-bottom:7px; }
+.version-content { padding:28px; }
+.version-content h4 { text-transform:uppercase; font-size:10px; letter-spacing:.14em; color:#e35a54; margin:0 0 13px; }
+.version-content ul { margin:0; padding-left:17px; color:#d0cdc6; font-size:13px; line-height:1.9; }
+.version-content li { padding-left:5px; margin-bottom:8px; }
+.version-content .caution { margin-top:22px; padding:13px 15px; border-left:2px solid #a92d2d; background:#272727; font-size:11px; line-height:1.7; color:#c7c3bc; }
+.conclusion { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start; }
+.quote { font-family:var(--site-font-heading); font-size:clamp(25px,3.2vw,39px); line-height:1.2; border-left:3px solid var(--site-primary); padding-left:23px; margin:0; }
+.conclusion-copy p { font-size:13px; line-height:1.8; color:light-dark(#55514c,#c0bfba); margin-top:0; }
+.source-list { display:flex; flex-wrap:wrap; gap:9px; margin-top:20px; }
+.source-list a { font-size:10px; border:1px solid light-dark(#ccc6bc,#4a4a4a); padding:9px 11px; text-decoration:none; }
+.source-list a:hover { border-color:var(--site-primary); color:var(--site-primary); }
+.footer { background:var(--site-secondary); color:#aaa; padding:24px max(5vw,22px); display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; font-size:10px; line-height:1.7; }
+.footer strong { color:#eee; letter-spacing:.1em; }
+@media(max-width:800px) { .hero { grid-template-columns:1fr; } .hero-art { min-height:280px; grid-row:1; } .hero-copy { padding:36px 24px 46px; } .hero-art:after { background:linear-gradient(0deg,#171717 0%,transparent 60%); } .timeline-track { grid-template-columns:repeat(2,1fr); row-gap:20px; } .evidence-grid { grid-template-columns:1fr 1fr; } .version-panel { grid-template-columns:1fr; } .version-aside { border-right:0; border-bottom:1px solid #464646; } .conclusion { grid-template-columns:1fr; gap:25px; } }
+@media(max-width:520px) { .topbar { align-items:flex-start; flex-direction:column; } .topbar nav { gap:12px; } .section-head { align-items:flex-start; flex-direction:column; } .timeline-track { grid-template-columns:1fr; } .timeline-detail { grid-template-columns:1fr; gap:8px; } .evidence-grid { grid-template-columns:1fr; } .evidence-card { min-height:unset; } .hero-meta { gap:17px; } }
+</style>
+</head>
+<body>
+<div id="app">
+<header class="topbar">
+  <div class="brand">Архив расследований <span> / № 001</span></div>
+  <nav aria-label="Главная навигация"><a href="#timeline">Хронология</a><a href="#evidence">Улики</a><a href="#versions">Версии</a><a href="#sources">Источники</a></nav>
+</header>
+<main>
+<section class="hero">
+  <div class="hero-copy">
+    <div class="kicker">Историческое расследование · Даллас, 1963</div>
+    <h1>Убийство<br>Джона Ф. <em>Кеннеди</em></h1>
+    <p>22 ноября 1963 года президент США был смертельно ранен во время кортежа в Далласе. Что установили расследования, какие доказательства сохранились и почему некоторые вопросы остаются предметом споров?</p>
+    <div class="hero-meta"><div><strong>22.11.1963</strong><small>День убийства</small></div><div><strong>12:30</strong><small>Местное время выстрелов</small></div><div><strong>60 лет+</strong><small>Споров и расследований</small></div></div>
+  </div>
+  <div class="hero-art"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/John_F._Kennedy_motorcade%2C_Dallas%2C_Texas%2C_November_22%2C_1963.jpg" alt="Президентский кортеж Джона Кеннеди в Далласе, 22 ноября 1963 года" onerror="this.style.display='none'"><div class="photo-caption">ДАЛЛАС, ТЕХАС<br>22 НОЯБРЯ 1963 · АРХИВНЫЙ КАДР</div></div>
+</section>
+<div class="ticker"><b>ДОСЬЕ 001</b><span>Установленные факты</span><span>·</span><span>Спорные доказательства</span><span>·</span><span>Версии и контекст</span></div>
+<section class="section timeline" id="timeline">
+  <div class="section-head"><div><div class="section-no">01 / Хронология</div><h2>День, изменивший историю</h2></div><p class="section-intro">Выберите событие, чтобы прочитать краткую справку. Время приводится приблизительно там, где источники расходятся.</p></div>
+  <div class="timeline-track" role="list">
+    <article class="time-item active" role="button" tabindex="0" data-time="11:40" data-title="Прибытие в Даллас" data-detail="Президентский кортеж прибыл в аэропорт Лав-Филд. Кеннеди и первая леди Жаклин Кеннеди отправились на открытом лимузине по запланированному маршруту через город."><time>11:40</time><h3>Прибытие</h3><p>Президентский самолёт приземляется в аэропорту Лав-Филд.</p></article>
+    <article class="time-item" role="button" tabindex="0" data-time="12:30" data-title="Выстрелы на Дили-Плаза" data-detail="Когда лимузин проезжал через Дили-Плаза, прозвучали выстрелы. Кеннеди получил смертельное ранение; губернатор Техаса Джон Конналли также был ранен. Точная реконструкция последовательности выстрелов и отдельных деталей остаётся предметом экспертных споров."><time>12:30</time><h3>Выстрелы</h3><p>Кортеж проходит через Дили-Плаза; президент получает смертельное ранение.</p></article>
+    <article class="time-item" role="button" tabindex="0" data-time="13:00" data-title="Смерть президента объявлена" data-detail="В больнице Parkland Memorial Hospital врачи пытались спасти президента. В 13:00 по местному времени его смерть была официально объявлена. Вице-президент Линдон Джонсон вскоре принёс присягу на борту самолёта Air Force One."><time>13:00</time><h3>Подтверждение смерти</h3><p>В больнице Parkland объявляют о смерти президента.</p></article>
+    <article class="time-item" role="button" tabindex="0" data-time="24 ноября" data-title="Освальд убит" data-detail="Через два дня подозреваемого Ли Харви Освальда застрелил владелец ночного клуба Джек Руби в подвале полицейского управления Далласа во время перевода Освальда. Освальд умер в тот же день, так и не предстал перед судом за убийство президента."><time>24.11.1963</time><h3>Второе убийство</h3><p>Джек Руби смертельно ранит задержанного Ли Харви Освальда.</p></article>
+  </div>
+  <div class="timeline-detail" aria-live="polite"><div class="detail-time" id="detailTime">11:40</div><p id="detailText">Президентский кортеж прибыл в аэропорт Лав-Филд. Кеннеди и первая леди Жаклин Кеннеди отправились на открытом лимузине по запланированному маршруту через город.</p></div>
+</section>
+<section class="section" id="evidence">
+  <div class="section-head"><div><div class="section-no">02 / Материалы дела</div><h2>Улики под микроскопом</h2></div><p class="section-intro">Не все элементы дела имеют одинаковый доказательный статус. Откройте карточки для пояснений и ограничений.</p></div>
+  <div class="evidence-grid">
+    <article class="evidence-card"><div class="evidence-top"><div class="evidence-icon">▤</div><span class="tag fact">Документировано</span></div><h3>Здание книгохранилища</h3><p>Освальд работал в Техасском школьном книгохранилище, откуда, согласно официальной версии, велась стрельба.</p><button aria-expanded="false">Изучить материал <span>＋</span></button><div class="evidence-detail">Комиссия Уоррена сопоставила свидетельские показания, найденные гильзы и винтовку с шестого этажа. Эти материалы стали центральной частью официальной версии. Сами по себе они не отвечают на каждый вопрос о мотивах и возможных сообщниках.</div></article>
+    <article class="evidence-card"><div class="evidence-top"><div class="evidence-icon">◎</div><span class="tag fact">Подлинный материал</span></div><h3>Фильм Запрудера</h3><p>Любительская киносъёмка запечатлела кортеж и момент нападения с точки наблюдения на Дили-Плаза.</p><button aria-expanded="false">Изучить материал <span>＋</span></button><div class="evidence-detail">Фильм Абрахама Запрудера — важный первичный визуальный источник. Он помогает анализировать движение автомобиля и реакцию людей, но не показывает сам источник всех выстрелов и не может один разрешить каждую спорную деталь.</div></article>
+    <article class="evidence-card"><div class="evidence-top"><div class="evidence-icon">⌁</div><span class="tag dispute">Оспаривалось</span></div><h3>Акустические данные</h3><p>В 1979 году комитет Конгресса счёл убийство, вероятно, результатом заговора, в том числе опираясь на акустический анализ.</p><button aria-expanded="false">Изучить материал <span>＋</span></button><div class="evidence-detail">Позднее Национальный исследовательский совет США (1982) указал, что акустические данные не подтверждают наличие второго стрелка. Это важный пример того, как выводы расследования могут пересматриваться при проверке методов и доказательств.</div></article>
+    <article class="evidence-card"><div class="evidence-top"><div class="evidence-icon">▣</div><span class="tag fact">Установлено</span></div><h3>Винтовка и гильзы</h3><p>Следствие связало найденную в здании винтовку с Освальдом и выстрелами в кортеж.</p><button aria-expanded="false">Изучить материал <span>＋</span></button><div class="evidence-detail">Комиссия Уоррена сочла баллистические и вещественные материалы согласующимися с выводом о стрельбе из здания книгохранилища. Публичная дискуссия затрагивала детали реконструкции, но сама винтовка — реальный элемент расследования, а не слух.</div></article>
+    <article class="evidence-card"><div class="evidence-top"><div class="evidence-icon">▥</div><span class="tag fact">Официальный вывод</span></div><h3>Комиссия Уоррена</h3><p>Комиссия 1964 года заключила, что Освальд убил Кеннеди и действовал один.</p><button aria-expanded="false">Изучить материал <span>＋</span></button><div class="evidence-detail">Комиссия, созданная президентом Линдоном Джонсоном, изучила свидетельства, вещественные материалы и документы. Её вывод — ключевой официальный ориентир, но последующие расследования и критики ставили вопросы к отдельным аспектам работы комиссии.</div></article>
+    <article class="evidence-card"><div class="evidence-top"><div class="evidence-icon">✕</div><span class="tag dispute">Не доказано</span></div><h3>Возможные заказчики</h3><p>ЦРУ, мафия, Куба и другие силы фигурируют в популярных теориях, но наличие конкретного заказчика не доказано.</p><button aria-expanded="false">Изучить материал <span>＋</span></button><div class="evidence-detail">Мотивы, политические конфликты и подозрения не равны доказательству участия. Надёжного общепринятого доказательства, устанавливающего конкретного заказчика убийства, нет. Теории необходимо оценивать по проверяемым источникам, а не по их популярности.</div></article>
+  </div>
+</section>
+<section class="section versions" id="versions">
+  <div class="section-head"><div><div class="section-no">03 / Сравнение версий</div><h2>Что говорят расследования</h2></div><p class="section-intro">Переключайте версии. Здесь различаются официальные выводы, выводы поздней комиссии и неподтверждённые предположения.</p></div>
+  <div class="version-tabs" role="tablist"><button class="active" role="tab" aria-selected="true" data-version="official">Официальная версия</button><button role="tab" aria-selected="false" data-version="congress">Комитет Конгресса</button><button role="tab" aria-selected="false" data-version="conspiracy">Теории заговора</button></div>
+  <div class="version-panel" aria-live="polite"><div class="version-aside"><div class="label" id="versionLabel">Комиссия Уоррена · 1964</div><h3 id="versionTitle">Освальд действовал один</h3><p id="versionDesc">Официальное расследование пришло к выводу, что Ли Харви Освальд стрелял в президента из здания школьного книгохранилища и не действовал в рамках доказанного заговора.</p><div class="verdict"><strong>Статус вывода</strong><span id="versionVerdict">Официальное заключение комиссии</span></div></div><div class="version-content"><h4 id="versionEvidenceTitle">На чём основан вывод</h4><ul id="versionEvidence"><li>Вещественные доказательства и винтовка, найденная в здании.</li><li>Свидетельские показания и реконструкция маршрута кортежа.</li><li>Исследование обстоятельств жизни и перемещений Освальда.</li></ul><div class="caution" id="versionCaution">Важно: официальный вывод — не то же самое, что абсолютная уверенность во всех деталях. Однако наличие вопросов само по себе не доказывает альтернативную версию.</div></div></div>
+</section>
+<section class="section" id="sources">
+  <div class="section-head"><div><div class="section-no">04 / Вывод</div><h2>Что можно утверждать уверенно?</h2></div></div>
+  <div class="conclusion"><blockquote class="quote">«Вопросы остаются. Но вопросы — это ещё не доказательство заговора».</blockquote><div class="conclusion-copy"><p>Джон Кеннеди был убит в Далласе 22 ноября 1963 года. Комиссия Уоррена назвала Ли Харви Освальда единственным стрелком. Комитет Палаты представителей по убийствам в 1979 году предположил наличие заговора, однако последующая проверка акустических данных поставила один из ключевых аргументов этого вывода под сомнение.</p><p>Исторически аккуратный подход — отделять первичные документы и установленные обстоятельства от интерпретаций, слухов и недоказанных обвинений. На сегодняшний день общепринятого доказанного ответа о конкретном заказчике убийства нет.</p><div class="source-list"><a href="https://www.archives.gov/research/jfk/warren-commission-report" target="_blank" rel="noopener">Национальный архив США · Комиссия Уоррена ↗</a><a href="https://www.archives.gov/research/jfk/house-select-committee-report" target="_blank" rel="noopener">Отчёт комитета Палаты представителей ↗</a><a href="https://nap.nationalacademies.org/catalog/10264/the-evaluation-of-the-record-of-the-john-f-kennedy-assassination" target="_blank" rel="noopener">Национальный исследовательский совет · акустика ↗</a></div></div></div>
+</section>
+</main>
+<footer class="footer"><div><strong>АРХИВ РАССЛЕДОВАНИЙ / ДОСЬЕ 001</strong><br>Исторический обзор · Не является официальным расследованием</div><div>Факты и интерпретации разделены намеренно.<br>Дизайн: архивная типографика · Чёрно-белая палитра · Красный акцент</div></footer>
+</div>
+<script>
+const timelineItems = [...document.querySelectorAll('.time-item')];
+function selectTimeline(item) {
+  timelineItems.forEach(el => el.classList.toggle('active', el === item));
+  document.getElementById('detailTime').textContent = item.dataset.time;
+  document.getElementById('detailText').textContent = item.dataset.detail;
+}
+timelineItems.forEach(item => {
+  item.addEventListener('click', () => selectTimeline(item));
+  item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectTimeline(item); } });
+});
+document.querySelectorAll('.evidence-card button').forEach(button => {
+  button.addEventListener('click', () => {
+    const card = button.closest('.evidence-card');
+    const open = card.classList.toggle('open');
+    button.setAttribute('aria-expanded', String(open));
+    button.firstChild.textContent = open ? 'Скрыть материал ' : 'Изучить материал ';
+    button.querySelector('span').textContent = open ? '−' : '＋';
+  });
+});
+const versions = {
+  official: {
+    label:'Комиссия Уоррена · 1964', title:'Освальд действовал один', desc:'Официальное расследование пришло к выводу, что Ли Харви Освальд стрелял в президента из здания школьного книгохранилища и не действовал в рамках доказанного заговора.', verdict:'Официальное заключение комиссии', heading:'На чём основан вывод', evidence:['Вещественные доказательства и винтовка, найденная в здании.','Свидетельские показания и реконструкция маршрута кортежа.','Исследование обстоятельств жизни и перемещений Освальда.'], caution:'Важно: официальный вывод — не то же самое, что абсолютная уверенность во всех деталях. Однако наличие вопросов само по себе не доказывает альтернативную версию.'
+  },
+  congress: {
+    label:'Комитет Палаты представителей · 1979', title:'Вероятен заговор', desc:'Комитет Палаты представителей по убийствам пришёл к выводу, что Кеннеди, вероятно, был убит в результате заговора. При этом он не установил личность второго стрелка или других участников.', verdict:'Вывод позднего расследования; часть оснований оспорена', heading:'Что важно учитывать', evidence:['Комитет повторно изучил материалы и свидетельства, недоступные или иначе оценённые ранее.','Вывод о заговоре частично опирался на акустический анализ записи полицейской радиосвязи.','В 1982 году Национальный исследовательский совет заключил, что эти акустические данные не подтверждают второй выстрел.'], caution:'Это реальный вывод официального комитета, но он не доказывает существование конкретного заказчика. Позднейшая проверка ослабила важную часть его доказательной базы.'
+  },
+  conspiracy: {
+    label:'Популярные гипотезы · не единый вывод', title:'Кто мог стоять за убийством?', desc:'В книгах и публичных обсуждениях выдвигались версии об участии спецслужб, организованной преступности, иностранных государств и политических противников. Ни одна из этих версий не стала доказанным общепринятым ответом.', verdict:'Неподтверждённые версии', heading:'Как оценивать такие утверждения', evidence:['Ищите первичный документ или проверяемую цепочку происхождения доказательства.','Отличайте подтверждённый факт от мотива, совпадения или свидетельства со слов других.','Проверяйте, не было ли ключевое доказательство позднее опровергнуто или переоценено.'], caution:'Этот раздел не утверждает, что заговор невозможен; он указывает, что обвинение конкретных лиц или организаций требует доказательств, которых недостаточно для окончательного вывода.'
+  }
+};
+document.querySelectorAll('.version-tabs button').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('.version-tabs button').forEach(b => { const active = b === button; b.classList.toggle('active', active); b.setAttribute('aria-selected', String(active)); });
+  const v = versions[button.dataset.version];
+  document.getElementById('versionLabel').textContent = v.label;
+  document.getElementById('versionTitle').textContent = v.title;
+  document.getElementById('versionDesc').textContent = v.desc;
+  document.getElementById('versionVerdict').textContent = v.verdict;
+  document.getElementById('versionEvidenceTitle').textContent = v.heading;
+  document.getElementById('versionEvidence').innerHTML = v.evidence.map(item => '<li></li>').join('');
+  [...document.querySelectorAll('#versionEvidence li')].forEach((li,i) => li.textContent = v.evidence[i]);
+  document.getElementById('versionCaution').textContent = v.caution;
+}));
+</script>
+</body>
+</html>
